@@ -1,12 +1,12 @@
 import './App.css'
-import Cadastro from './components/Cadastro'
+import Sinalizacoes from './components/Sinalizacoes'
 
 function App() {
  
 
   return (
     <>
-      <Cadastro />
+      <Sinalizacoes />
     </>
   )
 }
