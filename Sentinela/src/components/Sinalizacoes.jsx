@@ -12,7 +12,9 @@ export default function Sinalizacoes() {
 
     async function buscarAlertas() {
       try {
-        const dados = [];
+        const resposta = await fetch("http://localhost:8000/alertas.php");
+if (!resposta.ok) throw new Error("Falha ao buscar alertas");
+const dados = await resposta.json();
 
         if (ativo) {
           setAlertas(dados);

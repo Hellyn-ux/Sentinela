@@ -5,12 +5,16 @@ function Cadastro() {
   const [form, setForm] = useState({
     nome: "",
     email: "",
+    cpf: "",
+    telefone: "",
     senha: "",
+    confirmarSenha: "",
     termos: false,
   });
 
   const [mensagem, setMensagem] = useState("");
   const [sucesso, setSucesso] = useState(false);
+  const [enviando, setEnviando] = useState(false);
 
   function handleChange(event) {
     const { name, value, type, checked } = event.target;
@@ -23,7 +27,7 @@ function Cadastro() {
     setMensagem("");
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (form.senha.length < 8) {
@@ -44,14 +48,46 @@ function Cadastro() {
       return;
     }
 
-    setMensagem("Cadastro realizado com sucesso!");
-    setSucesso(true);
+    setEnviando(true);
 
-    console.log("Dados do cadastro:", {
-      ...form,
-      senha: "[oculta]",
-      confirmarSenha: "[oculta]",
-    });
+    try {
+      const resposta = await fetch("http://localhost:8000/cadastro.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: form.nome,
+          email: form.email,
+          cpf: form.cpf,
+          telefone: form.telefone,
+          senha: form.senha,
+          termos: form.termos,
+        }),
+      });
+
+      const dados = await resposta.json();
+
+      if (resposta.ok) {
+        setMensagem(dados.mensagem);
+        setSucesso(true);
+        setForm({
+          nome: "",
+          email: "",
+          cpf: "",
+          telefone: "",
+          senha: "",
+          confirmarSenha: "",
+          termos: false,
+        });
+      } else {
+        setMensagem(dados.erro || "Não foi possível cadastrar.");
+        setSucesso(false);
+      }
+    } catch {
+      setMensagem("Não foi possível conectar ao servidor.");
+      setSucesso(false);
+    } finally {
+      setEnviando(false);
+    }
   }
 
   return (
@@ -77,20 +113,33 @@ function Cadastro() {
             Preencha os dados abaixo para se cadastrar
           </p>
 
-          <form onSubmit={handleSubmit}>
-            <div className="campo">
-              <label htmlFor="nome">Nome completo</label>
+          <form onSubmit={handleSubmit}> 
+              <div className="campo">
+              <label htmlFor="nome">Nome</label>
               <input
                 id="nome"
                 name="nome"
                 type="text"
-                placeholder="Digite seu nome completo"
+                placeholder="Digite seu nome"
                 value={form.nome}
                 onChange={handleChange}
-                autoComplete="name"
                 required
               />
             </div>
+                        <div className="campo">
+              <label htmlFor="cpf">CPF</label>
+              <input
+                id="cpf"
+                name="cpf"
+                type="text"
+                placeholder="Digite seu CPF"
+                value={form.cpf}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+             
 
             <div className="campo">
               <label htmlFor="email">E-mail</label>
@@ -106,28 +155,15 @@ function Cadastro() {
               />
             </div>
 
-            <div className="campo">
-              <label htmlFor="usuario">CPF</label>
-              <input
-                id="usuario"
-                name="usuario"
-                type="text"
-                placeholder="Digite seu CPF"
-                value={form.usuario}
-                onChange={handleChange}
-                autoComplete="CPF"
-                required
-              />
-            </div>
 
             <div className="campo">
-              <label htmlFor="senha">Telefone</label>
+              <label htmlFor="telefone">Telefone</label>
               <input
-                id="senha"
-                name="senha"
+                id="telefone"
+                name="telefone"
                 type="text"
                 placeholder="Digite seu telefone"
-                value={form.senha}
+                value={form.telefone}
                 onChange={handleChange}
                 autoComplete="tel"
                 required
@@ -135,21 +171,32 @@ function Cadastro() {
             </div>
 
             <div className="campo">
-              <label htmlFor="confirmarSenha">
-                Senha
-              </label>
+              <label htmlFor="senha">Senha</label>
               <input
-                id="confirmarSenha"
-                name="confirmarSenha"
+                id="senha"
+                name="senha"
                 type="password"
-                placeholder="Senha"
-                value={form.confirmarSenha}
+                placeholder="Mínimo de 8 caracteres"
+                value={form.senha}
                 onChange={handleChange}
                 autoComplete="new-password"
                 required
               />
             </div>
 
+            <div className="campo">
+              <label htmlFor="confirmarSenha">Confirmar senha</label>
+              <input
+                id="confirmarSenha"
+                name="confirmarSenha"
+                type="password"
+                placeholder="Repita a senha"
+                value={form.confirmarSenha}
+                onChange={handleChange}
+                autoComplete="new-password"
+                required
+              />
+            </div>
 
 
             <label className="termos">
@@ -177,8 +224,8 @@ function Cadastro() {
               </p>
             )}
 
-            <button type="submit" className="botao-cadastro">
-              Cadastrar
+            <button type="submit" className="botao-cadastro" disabled={enviando}>
+              {enviando ? "Enviando..." : "Cadastrar"}
             </button>
 
             <div className="divisor">
