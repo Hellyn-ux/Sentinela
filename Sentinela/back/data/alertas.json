@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "tipo": "Alagamento",
+    "nivel": "Crítico",
+    "local": "Recife - Zona Oeste",
+    "descricao": "Chuva intensa com risco de alagamento em vias principais.",
+    "status": "Ativo",
+    "data_hora": "2026-10-20 13:00:00"
+  },
+  {
+    "id": 2,
+    "tipo": "Deslizamento",
+    "nivel": "Alto",
+    "local": "Olinda - Alto da Sé",
+    "descricao": "Risco de deslizamento de barreiras após chuvas contínuas.",
+    "status": "Ativo",
+    "data_hora": "2026-10-20 11:00:00"
+  },
+  {
+    "id": 3,
+    "tipo": "Ressaca",
+    "nivel": "Moderado",
+    "local": "Jaboatão dos Guararapes",
+    "descricao": "Ondas fortes no litoral, evite entrar no mar.",
+    "status": "Em análise",
+    "data_hora": "2026-10-20 08:00:00"
+  },
+  {
+    "id": 4,
+    "tipo": "Vendaval",
+    "nivel": "Baixo",
+    "local": "Paulista",
+    "descricao": "Rajadas de vento previstas para o fim da tarde.",
+    "status": "Encerrado",
+    "data_hora": "2026-10-19 15:00:00"
+  }
+]
