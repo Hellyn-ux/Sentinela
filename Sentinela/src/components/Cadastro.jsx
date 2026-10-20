@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../App.css";
 
-function Cadastro() {
+function Cadastro({ irPara }) {
   const [form, setForm] = useState({
     nome: "",
     email: "",
@@ -92,7 +92,7 @@ function Cadastro() {
 
   return (
     <div className="pagina">
-      <header className="navbar">
+            <header className="navbar">
         <a href="#" className="logo">
           <span className="logo-icon"></span>
           Sentinela
@@ -100,7 +100,24 @@ function Cadastro() {
 
         <div className="login">
           Já tem uma conta?
-          <a href="#">Entrar</a>
+                    <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              irPara("login");
+            }}
+          >
+            Entrar
+          </a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              irPara("alertas");
+            }}
+          >
+            Alertas
+          </a>
         </div>
       </header>
 

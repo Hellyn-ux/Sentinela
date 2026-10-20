@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../App.css";
 
-export default function Sinalizacoes() {
+export default function Sinalizacoes({ irPara }) {
   const [alertas, setAlertas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [filtro, setFiltro] = useState("Todos");
@@ -31,7 +31,6 @@ const dados = await resposta.json();
 
     buscarAlertas();
 
-    // Atualiza a lista a cada 60 segundos.
     const intervalo = setInterval(buscarAlertas, 60000);
 
     return () => {
@@ -50,6 +49,7 @@ const dados = await resposta.json();
 
   return (
     <section>
+            <button onClick={() => irPara("cadastro")}>Cadastro</button>
       <h1>Alertas de desastres naturais</h1>
 
       <label htmlFor="filtro">Filtrar por gravidade: </label>
