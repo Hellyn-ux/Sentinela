@@ -1,5 +1,6 @@
 <?php
 
+date_default_timezone_set('America/Recife');
 const PASTA_DADOS = __DIR__ . '/data/';
 
 
@@ -99,6 +100,37 @@ function validarCadastro(array $d): array
     }
     if (empty($d['termos'])) {
         $erros[] = 'Você precisa aceitar os termos de uso.';
+    }
+
+    return $erros;
+}
+
+
+const TIPOS_RISCO = ['Desabamento', 'Inundação', 'Choque elétrico', 'Outro'];
+const NIVEIS_RISCO = ['Crítico', 'Alto', 'Moderado', 'Baixo'];
+
+// Pega um campo de texto do JSON de forma segura (sem erro se vier vazio ou errado).
+function texto(array $dados, string $campo): string
+{
+    return is_string($dados[$campo] ?? null) ? trim($dados[$campo]) : '';
+}
+
+// Devolve uma lista de erros (vazia se estiver tudo certo).
+function validarPontoRisco(array $d): array
+{
+    $erros = [];
+
+    if (!in_array($d['tipo'] ?? '', TIPOS_RISCO, true)) {
+        $erros[] = 'Tipo de risco inválido.';
+    }
+    if (strlen(texto($d, 'local')) < 3) {
+        $erros[] = 'Informe o local do ponto de risco.';
+    }
+    if (strlen(texto($d, 'descricao')) < 10) {
+        $erros[] = 'Descreva o risco com pelo menos 10 caracteres.';
+    }
+    if (!in_array($d['nivel'] ?? '', NIVEIS_RISCO, true)) {
+        $erros[] = 'Nível de gravidade inválido.';
     }
 
     return $erros;
