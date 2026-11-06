@@ -85,7 +85,8 @@ function validarCadastro(array $d): array
     $erros = [];
 
    if (strlen(trim($d['nome'] ?? '')) < 3) {
-    }
+    $erros[] = 'Informe o nome completo.';
+}
     if (!filter_var($d['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
         $erros[] = 'E-mail inválido.';
     }
